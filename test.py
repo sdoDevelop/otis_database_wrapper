@@ -1,14 +1,15 @@
-import datetime
+import classes
+import sys
 
-class test1:
-    x = 1
+#err = classes.errario.ind_error(2, "osjf", "lasjdofje", "asodfjsd")
+#classes.errario.go("",err)
+
+print(classes.resource_management.error_log)
+
+import os
 
 
-    class test2:
-        y = 'Timestamp: {:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now())
 
-
-
-dd = test1
-
-print(dd.test2.y)
+newpath = classes.resource_management.error_log
+if not os.path.exists(newpath):
+    os.makedirs(newpath)

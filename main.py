@@ -1,8 +1,11 @@
 import classes
-import datetime
+import os
+import sys
 
-print("main script")
+print("main.py")
 
-err = classes.errario.ind_error("ojsf","osjdf","osjidf","oksdjf")
-print( "time: " + err.time)
-print( "error_code: " + err.error_code )
+poop = classes.resource_management("dosjnf")
+
+
+with open(poop.error_log, "a") as target:
+    target.write("write the god dam error")

@@ -1,8 +1,11 @@
 import sqlite3
 import datetime
+import os
+import sys
 
 class resource_management:
     # Set up the initial app folder directory dependant on os
+    """
     from sys import platform
     if platform == "linux" or platform == "linux2":
         # Linux
@@ -13,12 +16,30 @@ class resource_management:
     elif platform == "win32":
         # Windows
         app_folder = ""
+    """
 
+    app_folder = ""
+    db_folder = ""
+    db_file = ""
+    log_folder = ""
+    error_log = ""
 
-    # Set up any internal folders and files
-    db_folder = app_folder + "db/"
-    db_file = db_folder + "otis_db.sqlite"
+    def __init__(self,dill):
+        app_folder = os.path.expanduser("~") + "/.otis"
 
+        # Set up any internal folders and files
+        db_folder = app_folder + "/db"
+        db_file = db_folder + "/otis_db.sqlite"
+        log_folder = app_folder + "/logs"
+        error_log = log_folder + "/error_log.txt"
+
+        target = resource_management.log_folder
+        if not os.path.exists(target):
+            os.makedirs(target)
+        thefile = open(target,"w")
+        thefile.write("__--__Error Log__--__")
+        thefile.write(os.linesep)
+        thefile.write(os.linesep)
 
 
 class errario:
@@ -27,7 +48,7 @@ class errario:
 
     class ind_error:
         time = ""
-        error_code = ""
+        error_code = []
         facility = ""
         message = ""
         stack_trace = ""
@@ -42,7 +63,21 @@ class errario:
 
     def go(self,err):
         # log error to memory
-        self.error_log.append(err)
+        #self.error_log.append(err)
+
+        # write to file
+        target = classes.resource_management.error_log
+        if not os.path.exists(target):
+            os.makedirs(target)
+
+
+        string = raw_input("brother motha fucking ali")
+        thefile = open(target, 'w')
+        thefile.write("brother motha fucking ali/n")
+        thefile.close()
+
+
+
 
 
 
