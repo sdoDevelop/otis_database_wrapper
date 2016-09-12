@@ -4,39 +4,25 @@ import os
 import sys
 
 class resource_management:
-    # Set up the initial app folder directory dependant on os
-    """
-    from sys import platform
-    if platform == "linux" or platform == "linux2":
-        # Linux
-        app_folder = "/usr/local/lib/otis/"
-    elif platform == "darwin":
-        # OS X
-        app_folder = "Library/Application support/"
-    elif platform == "win32":
-        # Windows
-        app_folder = ""
-    """
+    app_folder = None
+    db_folder = None
+    db_file = None
+    log_folder = None
+    error_log = None
 
-    app_folder = ""
-    db_folder = ""
-    db_file = ""
-    log_folder = ""
-    error_log = ""
-
-    def __init__(self,dill):
-        app_folder = os.path.expanduser("~") + "/.otis"
+    def __init__(self):
+        self.app_folder = os.path.expanduser("~") + "/.otis"
 
         # Set up any internal folders and files
-        db_folder = app_folder + "/db"
-        db_file = db_folder + "/otis_db.sqlite"
-        log_folder = app_folder + "/logs"
-        error_log = log_folder + "/error_log.txt"
+        self.db_folder = self.app_folder + "/db"
+        self.db_file = self.db_folder + "/otis_db.sqlite"
+        self.log_folder = self.app_folder + "/logs"
+        self.error_log = self.log_folder + "/error_log.txt"
 
-        target = resource_management.log_folder
+        target = self.log_folder
         if not os.path.exists(target):
             os.makedirs(target)
-        thefile = open(target,"w")
+        thefile = open(self.error_log,"w")
         thefile.write("__--__Error Log__--__")
         thefile.write(os.linesep)
         thefile.write(os.linesep)
@@ -45,13 +31,16 @@ class resource_management:
 class errario:
     error_log = []
     error_log_queue = []
+    resources = resource_management()
 
     class ind_error:
         time = ""
         error_code = []
-        facility = ""
-        message = ""
-        stack_trace = ""
+        facility = None
+        message = None
+        stack_trace = None
+        log_string = None
+
 
         def __init__(self,p_error_code=None,p_facility=None,p_message=None,p_stack_trace=None):
             # Set the error variables to these
@@ -61,21 +50,24 @@ class errario:
             self.message = p_message
             self.stack_trace = p_stack_trace
 
-    def go(self,err):
+            self.create_string()
+
+        def create_string(self):
+            s="[Time:" + self.time + "]"
+            s=s + " {" + self.error_code + " | " + self.facility + "}"
+            s=s + " *Message: " + self.message
+            self.log_string = s
+            return self.log_string
+
+
+    def go(self,err=ind_error):
         # log error to memory
-        #self.error_log.append(err)
+        self.error_log.append(err.create_string())
 
         # write to file
-        target = classes.resource_management.error_log
-        if not os.path.exists(target):
-            os.makedirs(target)
-
-
-        string = raw_input("brother motha fucking ali")
-        thefile = open(target, 'w')
-        thefile.write("brother motha fucking ali/n")
-        thefile.close()
-
+        string = err.create_string()
+        thefile = open(self.resources.error_log, "a")
+        thefile.write(string)
 
 
 
